@@ -10,35 +10,35 @@ import com.example.photoimagefilter.utilities.Coroutines
 
 class EditImageViewModel(private val ediImageRepository: EdiImageRepository) : ViewModel() {
 
-    private val imagePreviewDataState = MutableLiveData<ImagePreviewDataState>()
+    val imagePreviewDataState = MutableLiveData<ImagePreviewDataState>()
     val emitUiState: LiveData<ImagePreviewDataState> get() = imagePreviewDataState
 
     fun prepareImagePreview(imageUri: Uri){
         Coroutines.io {
             kotlin.runCatching {
-                emitUiState(isLoading = false)
+                emitImagePreviewUiState(isLoading = false)
                 ediImageRepository.prepareImagePreview(imageUri)
             }.onSuccess {
-                bitbap->
-                if(bitbap!=null){
-                    emitUiState(bitmap = bitbap)
+                bitmap->
+                if(bitmap!=null){
+                    emitImagePreviewUiState(bitmap = bitmap)
                 }else{
-                    emitUiState(error = "Unable to prepare image preview")
+                    emitImagePreviewUiState(error = "Unable to prepare image preview")
                 }
             }.onFailure {
-                emitUiState(error = it.message.toString())
+                emitImagePreviewUiState(error = it.message.toString())
             }
         }
     }
 
 
-    private fun emitUiState(
+    private fun emitImagePreviewUiState(
         isLoading: Boolean = false,
         bitmap: Bitmap? = null,
         error: String? = null
     ){
         val dataState = ImagePreviewDataState(isLoading, bitmap, error)
-        imagePreviewDataState.value = dataState
+        imagePreviewDataState.postValue(dataState)
     }
 
 
