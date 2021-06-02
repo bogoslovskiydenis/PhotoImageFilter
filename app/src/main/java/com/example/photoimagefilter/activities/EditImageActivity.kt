@@ -1,4 +1,4 @@
-package com.example.photoimagefilter
+package com.example.photoimagefilter.activities
 
 import android.graphics.BitmapFactory
 import android.net.Uri
