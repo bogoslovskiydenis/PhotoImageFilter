@@ -29,7 +29,7 @@ class EditImageActivity : AppCompatActivity() {
 
 
     private fun setupObservers() {
-        viewModel.imagePreviewDataState.observe(this, {
+        viewModel.imagePreviewUiState.observe(this, {
             val dataState = it ?: return@observe
             binding.previewProgressBar.visibility =
                 if (dataState.isLoading) View.VISIBLE else View.GONE
