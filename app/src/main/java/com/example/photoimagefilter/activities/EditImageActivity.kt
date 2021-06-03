@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.example.photoimagefilter.adapters.ImageFilterAdapter
 import com.example.photoimagefilter.databinding.ActivityEditImageBinding
 import com.example.photoimagefilter.utilities.displayToast
 import com.example.photoimagefilter.utilities.show
@@ -22,13 +23,14 @@ class EditImageActivity : AppCompatActivity() {
         binding = ActivityEditImageBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setListeners()
-       // displayImagePreview()
+        // displayImagePreview()
         setupObservers()
         prepareImagePreview()
     }
 
 
     private fun setupObservers() {
+        //imagePreviewUiState
         viewModel.imagePreviewUiState.observe(this, {
             val dataState = it ?: return@observe
             binding.previewProgressBar.visibility =
@@ -36,8 +38,25 @@ class EditImageActivity : AppCompatActivity() {
             dataState.bitmap?.let { bitmap ->
                 binding.imagePreview.setImageBitmap(bitmap)
                 binding.imagePreview.show()
+                viewModel.loadImageFilters(bitmap)
             } ?: kotlin.run {
                 dataState.error?.let { error ->
+                    displayToast(error)
+                }
+            }
+        })
+
+        //imageFiltersUiState
+        viewModel.imageFiltersUiState.observe(this, {
+            val imageFiltersDataState = it ?: return@observe
+            binding.imageFiltersProgressBar.visibility =
+                if (imageFiltersDataState.isLoading) View.VISIBLE else View.GONE
+            imageFiltersDataState.imageFilters?.let { imageFilters ->
+                ImageFilterAdapter(imageFilters).also { adatpter ->
+                    binding.filtersRecyclerView.adapter = adatpter
+                }
+            } ?: kotlin.run {
+                imageFiltersDataState.error?.let { error ->
                     displayToast(error)
                 }
             }
