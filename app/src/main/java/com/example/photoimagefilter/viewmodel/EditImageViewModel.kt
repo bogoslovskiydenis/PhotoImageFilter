@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.example.photoimagefilter.repository.EdiImageRepository
 import com.example.photoimagefilter.utilities.Coroutines
 
-class EditImageViewModel(private val ediImageRepository: EdiImageRepository) : ViewModel() {
+class EditImageViewModel(private val editImageRepository: EdiImageRepository) : ViewModel() {
 
     val imagePreviewDataState = MutableLiveData<ImagePreviewDataState>()
     val emitUiState: LiveData<ImagePreviewDataState> get() = imagePreviewDataState
@@ -17,7 +17,7 @@ class EditImageViewModel(private val ediImageRepository: EdiImageRepository) : V
         Coroutines.io {
             kotlin.runCatching {
                 emitImagePreviewUiState(isLoading = false)
-                ediImageRepository.prepareImagePreview(imageUri)
+                editImageRepository.prepareImagePreview(imageUri)
             }.onSuccess {
                 bitmap->
                 if(bitmap!=null){
