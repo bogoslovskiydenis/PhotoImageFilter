@@ -4,10 +4,15 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Environment
+import androidx.core.content.FileProvider
 import com.example.photoimagefilter.data.ImageFilter
 import jp.co.cyberagent.android.gpuimage.GPUImage
 import jp.co.cyberagent.android.gpuimage.filter.*
+import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
+import java.lang.Exception
 
 class EditImageRepositoryImpl(private val context: Context) : EdiImageRepository {
 
@@ -424,4 +429,30 @@ class EditImageRepositoryImpl(private val context: Context) : EdiImageRepository
     private fun getInputStreamFromUri(uri: Uri): InputStream? {
         return context.contentResolver.openInputStream(uri)
     }
+
+    //region : Save Filter/File Image
+    override suspend fun saveFilterImage(filterBitmap: Bitmap): Uri? {
+        return try {
+            val mediaStoregeDirectory =
+                File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Save Images")
+            if (!mediaStoregeDirectory.exists()) {
+                mediaStoregeDirectory.mkdirs()
+            }
+            val fileName = "IMG_${System.currentTimeMillis()}.jpg"
+            val file = File(mediaStoregeDirectory, fileName)
+            saveFile(file, filterBitmap)
+            FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+        } catch (exception: Exception) {
+            null
+        }
+    }
+
+    private fun saveFile(file: File, bitmap: Bitmap) {
+        with(FileOutputStream(file)) {
+            bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, this)
+            flush()
+            close()
+        }
+    }
+    //endregion F
 }
