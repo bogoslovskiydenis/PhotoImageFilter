@@ -33,6 +33,12 @@ class MainActivity : AppCompatActivity() {
                 startActivityForResult(pickerIntent, REQUEST_CODE_PICK_IMAGE)
             }
         }
+        //buttonSaveImage
+        binding.buttonSaveImage.setOnClickListener {
+            Intent(applicationContext, SaveImageActivity::class.java).also {
+                startActivity(it)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, result: Int, data: Intent?){
