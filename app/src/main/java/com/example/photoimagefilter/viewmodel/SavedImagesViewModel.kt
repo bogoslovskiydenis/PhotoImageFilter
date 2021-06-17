@@ -15,7 +15,7 @@ class SavedImagesViewModel(private val savedImagesRepository: SaveImagesReposito
 
     fun loadSavedImages() {
         Coroutines.io {
-            kotlin.runCatching {
+            runCatching {
                 emitSavedImagesUiState(isLoading = true)
                 savedImagesRepository.loadSavedImages()
             }.onSuccess { savedImages ->

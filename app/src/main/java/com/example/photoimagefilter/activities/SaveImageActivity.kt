@@ -3,6 +3,7 @@ package com.example.photoimagefilter.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import com.example.photoimagefilter.adapters.SavedImageAdapter
 import com.example.photoimagefilter.databinding.ActivitySaveImageBinding
 import com.example.photoimagefilter.utilities.displayToast
 import com.example.photoimagefilter.viewmodel.SavedImagesViewModel
@@ -19,17 +20,24 @@ class SaveImageActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupObserver()
         setListeners()
-        viewModel.loadSavedImages()
+            // viewModel.loadSavedImages()
     }
 
     private fun setupObserver() {
         viewModel.savedImagesUiState.observe(this, {
             val savedImagesDataState = it ?: return@observe
-            binding.savedImagesProgressBar.visibility
+            binding.savedImagesProgressBar.visibility =
             if (savedImagesDataState.isLoading) View.VISIBLE else View.GONE
             savedImagesDataState.savedImages?.let { savedImage ->
+//                SavedImageAdapter(savedImage).also {
+//                        adapter ->
+//                    with(binding.savedImagesRecyclerView) {
+//                        this.adapter = adapter
+//                        visibility = View.VISIBLE
+//                    }
+//                }
                 displayToast("${savedImage.size} image loaded")
-            } ?: kotlin.run {
+            } ?: run {
                 savedImagesDataState.error?.let { error ->
                     displayToast(error)
                 }

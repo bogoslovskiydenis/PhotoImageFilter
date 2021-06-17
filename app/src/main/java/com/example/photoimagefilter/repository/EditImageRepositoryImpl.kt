@@ -449,10 +449,10 @@ class EditImageRepositoryImpl(private val context: Context) : EdiImageRepository
 
     private fun saveFile(file: File, bitmap: Bitmap) {
         with(FileOutputStream(file)) {
-            bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 100, this)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, this)
             flush()
             close()
         }
     }
-    //endregion F
+    //endregion
 }

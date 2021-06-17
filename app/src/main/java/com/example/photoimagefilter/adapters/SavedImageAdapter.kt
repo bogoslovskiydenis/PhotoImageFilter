@@ -9,8 +9,7 @@ import java.io.File
 
 class SavedImageAdapter(private val savedImages: List<Pair<File, Bitmap>>) :
     RecyclerView.Adapter<SavedImageAdapter.SavedImageViewHolder>() {
-    inner class SavedImageViewHolder(val binding: ItemContainerSavedImageBinding) :
-        RecyclerView.ViewHolder(binding.root)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SavedImageViewHolder {
         val binding = ItemContainerSavedImageBinding.inflate(
@@ -30,7 +29,9 @@ class SavedImageAdapter(private val savedImages: List<Pair<File, Bitmap>>) :
     }
 
     override fun getItemCount() = savedImages.size
-        inner class SavedImagesViewHolder(val binding: ItemContainerSavedImageBinding) :
-            RecyclerView.ViewHolder(binding.root)
+
+
+    inner class SavedImageViewHolder(val binding: ItemContainerSavedImageBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
 }

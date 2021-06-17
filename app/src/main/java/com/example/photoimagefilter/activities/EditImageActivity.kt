@@ -63,7 +63,7 @@ class EditImageActivity : AppCompatActivity(), ImageFilterListeners {
                     viewModel.loadImageFilters(this)
                 }
 
-            } ?: kotlin.run {
+            } ?: run {
                 dataState.error?.let { error ->
                     displayToast(error)
                 }
@@ -79,7 +79,7 @@ class EditImageActivity : AppCompatActivity(), ImageFilterListeners {
                 ImageFilterAdapter(imageFilters, this).also { adatpter ->
                     binding.filtersRecyclerView.adapter = adatpter
                 }
-            } ?: kotlin.run {
+            } ?: run {
                 imageFiltersDataState.error?.let { error ->
                     displayToast(error)
                 }
@@ -107,7 +107,7 @@ class EditImageActivity : AppCompatActivity(), ImageFilterListeners {
                     startActivity(filteredImageIntent)
 
                 }
-            } ?: kotlin.run {
+            } ?: run {
                 saveFilteredImageDataState.error?.let { error ->
                     displayToast(error)
                 }
